@@ -1,0 +1,79 @@
+package latest;
+
+use warnings;
+use strict;
+use version;
+use feature ();
+
+use Carp;
+
+=head1 NAME
+
+latest - Use the latest Perl features
+
+=head1 VERSION
+
+This document describes latest version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+=head1 SYNOPSIS
+
+  use latest;
+  
+=head1 DESCRIPTION
+
+The line
+
+  use latest;
+
+is roughly equivalent to
+
+  use strict;
+  use warnings;
+  use $];
+
+except that 'use $]' doesn't work.
+
+=cut
+
+sub import {
+  strict->import;
+  warnings->import;
+  ( my $v = version->new( $] )->normal ) =~ s/^v/:/;
+  feature->import( $v );
+}
+
+1;
+__END__
+
+=head1 CONFIGURATION AND ENVIRONMENT
+  
+latest requires no configuration files or environment variables.
+
+=head1 DEPENDENCIES
+
+None.
+
+=head1 INCOMPATIBILITIES
+
+None reported.
+
+=head1 BUGS AND LIMITATIONS
+
+Please report any bugs or feature requests to
+C<bug-latest@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>.
+
+=head1 AUTHOR
+
+Andy Armstrong  C<< <andy@hexten.net> >>
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2009, Andy Armstrong C<< <andy@hexten.net> >>.
+
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>.
