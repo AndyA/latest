@@ -3,7 +3,13 @@ package latest;
 use warnings;
 use strict;
 use version;
-use feature ();
+
+my $HAV_FEATURE = 1;
+
+BEGIN {
+  eval 'require feature';
+  $HAV_FEATURE = 0 if $@;
+}
 
 use Carp;
 
@@ -50,8 +56,10 @@ Perl version.
 sub import {
   strict->import;
   warnings->import;
-  ( my $v = version->new( $] )->normal ) =~ s/^v/:/;
-  feature->import( $v );
+  if ( $HAV_FEATURE ) {
+    ( my $v = version->new( $] )->normal ) =~ s/^v/:/;
+    feature->import( $v );
+  }
 }
 
 1;
