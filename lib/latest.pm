@@ -37,6 +37,14 @@ is roughly equivalent to
 
 except that 'use $]' doesn't work.
 
+The main use case is to
+
+  use latest;
+
+at the top of your tests to shake out any obscure problems that might
+result from your code being used by a program that requires the latest
+Perl version.
+
 =cut
 
 sub import {
