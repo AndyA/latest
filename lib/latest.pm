@@ -1,15 +1,21 @@
+package latest::feature;
+
+BEGIN {
+  eval 'require feature';
+  if ( $@ ) {
+    eval 'sub import {}';    # NOP if we don't have feature
+  }
+  else {
+    our @ISA = qw( feature );
+    eval 'sub unknown_feature_bundle {}'; # Ignore unknown bundle errors
+  }
+}
+
 package latest;
 
 use warnings;
 use strict;
 use version;
-
-my $HAV_FEATURE = 1;
-
-BEGIN {
-  eval 'require feature';
-  $HAV_FEATURE = 0 if $@;
-}
 
 use Carp;
 
@@ -56,10 +62,8 @@ Perl version.
 sub import {
   strict->import;
   warnings->import;
-  if ( $HAV_FEATURE ) {
-    ( my $v = version->new( $] )->normal ) =~ s/^v/:/;
-    feature->import( $v );
-  }
+  ( my $v = version->new( $] )->normal ) =~ s/^v/:/;
+  latest::feature->import( $v );
 }
 
 1;
